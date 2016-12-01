@@ -1,9 +1,9 @@
-## What's mongoose-attachments?
+# mongoose-attachments
 
 Mongoose-Attachments is an attachments plugin for [Mongoose.js](http://mongoosejs.com/). It handles ImageMagick transformations for the following providers:
 
 
-### Stable Release
+## Stable Release
 
 You're reading the documentation for the next release of Mongoose-Attachments, which should be 0.1.0.
 The current stable release is [0.0.4](https://github.com/heapsource/mongoose-attachments/blob/v0.0.4).
@@ -13,7 +13,7 @@ providers into submodules. If you plan to use 0.0.4, do make sure that you use t
 (https://github.com/heapsource/mongoose-attachments/blob/v0.0.4/README.md).
 
 
-### Installation
+## Installation
 
 * [mongoose-attachments-localfs](https://github.com/heapsource/mongoose-attachments-localfs)
 * [mongoose-attachments-aws2js](https://github.com/heapsource/mongoose-attachments-aws2js)
@@ -22,7 +22,7 @@ providers into submodules. If you plan to use 0.0.4, do make sure that you use t
 Note: Mongoose-Attachments is bundled with each provider.
 
 
-### Usage
+## Usage
 
 The following example extends the 'Post' model to use attachments with a property called 'image' and three different styles.
 
@@ -68,7 +68,7 @@ PostSchema.plugin(attachments, {
 var Post = mongoose.model('Post', PostSchema);
 ```
 
-#### Using with Express.js uploads
+### Using with Express.js uploads
 
 Assuming that the HTML form sent a file in a field called 'image':
 
@@ -87,7 +87,7 @@ app.post('/upload', function(req, res, next) {
 });
 ```
 
-#### Using with an stand-alone app files
+### Using with an stand-alone app files
 
 ```javascript
 var post = new mongoose.model('Post')();
@@ -104,7 +104,7 @@ post.attach('image', {
 })
 ```
 
-#### Using Local Storage
+### Using Local Storage
 
 With [mongoose-attachments-localfs](https://github.com/heapsource/mongoose-attachments-localfs).
 
@@ -114,7 +114,7 @@ var attachments = require('mongoose-attachments-localfs');
 
 MySchema.plugin(attachments, {
   directory: '/absolute/path/to/public/images',
-  storage : {
+  storage: {
     providerName: 'localfs'
   },
   properties: {
@@ -148,7 +148,7 @@ MySchema.virtual('thumb_img').get(function() {
 The URL to the images would then be `http://<your host>/<mount path>/images` prepended to the value of `MyModel.detail_img` and `MyModel.thumb_img`.
 
 
-### Metadata
+## Metadata
 
 When mongoose-attachments is used with images, it can provide basic information for each one of the specified styles:
 
@@ -156,22 +156,44 @@ Example:
 
 ```javascript
 {
-  "dims" : {
-    "w" : 120,
-    "h" : 103
+  "dims": {
+    "w": 120,
+    "h": 103
   },
-  "depth" : 8,
-  "format" : "PNG",
-  "oname" : "dragon.png",
-  "mtime" : ISODate("2012-05-22T06:21:53Z"),
-  "ctime" : ISODate("2012-05-22T06:21:53Z"),
-  "size" : 26887,
-  "path" : "/achievements/4fbaaa31db8cec0923000019-medium.png",
-  "defaultUrl" : "http://gamygame-dev.s3.amazonaws.com/achievements/4fbaaa31db8cec0923000019-medium.png"
+  "depth": 8,
+  "format": "PNG",
+  "oname": "dragon.png",
+  "mtime": ISODate("2012-05-22T06:21:53Z"),
+  "ctime": ISODate("2012-05-22T06:21:53Z"),
+  "size": 26887,
+  "path": "/achievements/4fbaaa31db8cec0923000019-medium.png",
+  "defaultUrl": "http://gamygame-dev.s3.amazonaws.com/achievements/4fbaaa31db8cec0923000019-medium.png"
 }
 ```
 
-### Styles and ImageMagick Transformations
+## Options
+
+### `directory`
+
+Media directory, where files will be sent.
+ 
+### `storage`
+
+Choose between:
+
+* [mongoose-attachments-localfs](https://github.com/heapsource/mongoose-attachments-localfs)
+* [mongoose-attachments-aws2js](https://github.com/heapsource/mongoose-attachments-aws2js)
+* [mongoose-attachments-knox](https://github.com/heapsource/mongoose-attachments-knox)
+
+### `properties`
+
+Field properties.
+
+<b><code>upload_to</code></b>
+
+Optional property that specify the directory name created inside media directory. If not specified, it will be the field name.
+
+## Styles and ImageMagick Transformations
 
 Transformations are achieved by invoking the **convert** command from ImageMagick and passing all the properties of the style as arguments.
 
@@ -191,7 +213,7 @@ styles: {
 }
 ```
 
-#### Keeping the Original File
+### Keeping the Original File
 
 ```javascript
 styles: {
@@ -201,7 +223,7 @@ styles: {
 }
 ```
 
-#### Multiples Transformations
+### Multiples Transformations
 
 Use another properties under the style to provide more transformations
 
@@ -216,7 +238,7 @@ styles: {
 
 More information about 'blur' at the [ImageMagick website] http://www.imagemagick.org/script/command-line-options.php#blur
 
-#### Changing the Destination Format
+### Changing the Destination Format
 
 You can change the destination format by using the special transformation '$format' with a known file extension like *png*, *jpg*, *gif*, etc.
 
@@ -230,14 +252,14 @@ Example:
 
 Note: **DO NOT** include the dot in the extension.
 
-#### Supported Formats
+### Supported Formats
 
 There are two possibilities to define which file formats should be supported:
 
 1. white list (default)
 2. formats listed with certain flags by `convert -list format`
 
-##### White List
+#### White List
 
 The default white list contains:
 
@@ -252,7 +274,7 @@ To add a format call the following method before using the plugin in the mongoos
 attachments.registerDecodingFormat('BMP');
 ```
 
-##### Formats Provided by ImageMagick
+#### Formats Provided by ImageMagick
 
 ImageMagick (or GraphicsMagick) list the supported formats when calling `convert -list format` (or `identify`).
 The formats are flagged to show which operations are supported with each:
@@ -291,17 +313,15 @@ attachments.registerImageMagickFormats({ read: true }, function(error, formats) 
 });
 ```
 
-### Contributors
+## Contributors
 
 * [Johan Hernandez](https://github.com/thepumpkin1979)
 * [Chantal Ackermann](https://github.com/nuarhu)
+* [Pedro Vagner](https://github.com/pedrovagner)
 
 ## License (MIT)
 
-Copyright (c) 2011-2013 Firebase.co - http://firebase.co
+Copyright (c) 2011-2013 Firebase.co - http://firebase.co  
+Copyright (c) 2016-2016 Pedro Vagner [http://pedrovagner.com](http://pedrovagner.com)
 
-Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+See full [LICENSE](LICENSE).

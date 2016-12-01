@@ -1,6 +1,5 @@
 lib-cov
 *.seed
-*.log
 *.csv
 *.dat
 *.out
@@ -11,4 +10,13 @@ pids
 logs
 results
 
-node_modules
+/node_modules
+
+# IDEs and editors
+/.idea
+/.vscode
+
+# System Files
+.DS_Store
+Thumbs.db
+.directory
